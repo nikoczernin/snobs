@@ -5,7 +5,7 @@
     class="justify-space-between"
     >
         <router-link tag="div" to="/" exact class="">
-            <strong >Snobs</strong>
+            <strong >Snobs</strong> — Bottoms up, oida!
         </router-link>
         <v-spacer></v-spacer>
         <v-app-bar-nav-icon @click="menuOpen = !menuOpen"></v-app-bar-nav-icon>

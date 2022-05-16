@@ -28,6 +28,8 @@ export default {
         scores: Object,
     },
     mounted(){
+        // i created this flag to add the classes after the page is loaded
+        // so that the flex property could be animated
         this.loaded = true;
     }
 }
@@ -44,7 +46,9 @@ export default {
     align-items: center;
     display: flex;
     justify-content: center;
-    transition: all .8s ease-in-out;
+    flex: 1;
+    transition: flex .8s ease-in-out;
+
 }
 
 .team1{
