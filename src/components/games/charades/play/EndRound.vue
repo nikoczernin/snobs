@@ -4,7 +4,7 @@
         <h2>End of round "{{currentRound.text}}"</h2>
 
         <Scoreboard
-            :scores="scores"
+            :progress="progress"
         />
 
         <v-btn 

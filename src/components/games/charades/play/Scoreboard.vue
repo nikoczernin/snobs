@@ -1,37 +1,75 @@
 <template>
-        <v-row class="scoreboard mt-2 mb-5 flex-nowrap">
-            <v-col
-            :class="loaded & scores.team1 > scores.team2 ? 'big' : 'small'"
-            >
-                <div class="scoreBlock team1 rounded-pill">{{scores.team1}}</div>
-            </v-col>
-            <v-col
-            :class="loaded & scores.team1 < scores.team2 ? 'big' : 'small'"
-            class=" flex-shrink-1 "
-            >
-                <div class="scoreBlock team2 rounded-pill">{{scores.team2}}</div>
-            </v-col>
-        </v-row>
+        <div>
+            {{totalScoresPerRound}} lol
+            <v-row class="scoreboard mt-2 mb-5 flex-nowrap">
+                <v-col
+                :class="loaded & score1 > score2 ? 'big' : 'small'"
+                >
+                    <div class="scoreBlock team1 rounded-pill">{{score1}}</div>
+                </v-col>
+                <v-col
+                :class="loaded & score1 < score2 ? 'big' : 'small'"
+                >
+                    <div class="scoreBlock team2 rounded-pill">{{score2}}</div>
+                </v-col>
+            </v-row>
+        </div>
+
 </template>
 
 <script>
 //:class="scores.team1 < scores.team2 ? 'flex-grow-3' : 'flex-shrink-1'"
 export default {
     name: 'Scoreboard',
+    
+    props: {
+            progress: Array,
+        },
 
     data(){
         return {
-            loaded: Boolean,
+            loaded: false,
+            scoresPerTeam: [[],[]],
+            score1: 0,
+            score2: 0,
+            totalScoresPerRound: [[0, 0]],            
         }
     },
-    props: {
-        scores: Object,
+    methods: {
+        getScoresPerTeam(){
+            for (let i=0; i < this.progress.length; i++) {
+                var turn = this.progress[i]
+                this.scoresPerTeam[turn.team - 1].push(turn.points)
+            }
+        },
+        getTotalScoresPerRound(){
+            for (let i=0; i < this.scoresPerTeam[0].length; i++) {
+                // take the score of round i of each team
+                let score1_n = this.scoresPerTeam[0][i]
+                let score2_n = this.scoresPerTeam[1][i]
+                // add it to the total score up until round i of each team
+                let score1_p = this.totalScoresPerRound[i][0]
+                let score2_p = this.totalScoresPerRound[i][1]
+                // push both values in an array to the totalScoresPerRound
+                this.totalScoresPerRound.push([score1_n+score1_p, score2_n+score2_p])
+            }
+            // reassign the series data
+            //this.options.series[0].data = this.totalScoresPerRound
+            // save the current total scores of each team
+            let currentScore = this.totalScoresPerRound[1]
+            this.score1 = currentScore[0]
+            this.score2 = currentScore[1]
+        },
     },
     mounted(){
+        console.log("Start")
         // i created this flag to add the classes after the page is loaded
         // so that the flex property could be animated
         this.loaded = true;
-    }
+        // make an array with the scores earned by each team for each round and put that in a bigger array
+        this.getScoresPerTeam()
+        this.getTotalScoresPerRound()
+    },
 }
 </script>
 

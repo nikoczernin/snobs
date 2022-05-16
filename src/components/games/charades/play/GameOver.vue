@@ -8,7 +8,7 @@
             It's a draw!
         </h1>
         <Scoreboard
-            :scores="scores"
+            :progress="recentGame.progress"
         />
 
         <div class="teamShowcase" v-if="winningTeam > 0">
