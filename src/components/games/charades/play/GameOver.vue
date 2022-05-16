@@ -1,7 +1,5 @@
 <template>
     <div class="rounded-lg px-4 py-6 text-center floating">
-        {{scores}}
-        {{recentGame}}
         <h2>Game over!</h2>
         <h1 v-if="winningTeam != 0">
             <span :class="[winningTeam == 1 ? 'text1' : 'text2', 'winner']">Team {{winningTeam}}</span> won!
@@ -22,6 +20,8 @@
                     <span v-if="id!=0"> – </span>
                     {{player.name}}</span>
         </div>
+        {{scores}}
+        {{recentGame}}
     </div>
 </template>
 

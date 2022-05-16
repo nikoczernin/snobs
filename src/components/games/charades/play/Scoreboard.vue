@@ -1,11 +1,12 @@
 <template>
         <v-row class="scoreboard mt-2 mb-5 flex-nowrap">
             <v-col
-            class=" flex-shrink-1 "
+            :class="loaded & scores.team1 > scores.team2 ? 'big' : 'small'"
             >
                 <div class="scoreBlock team1 rounded-pill">{{scores.team1}}</div>
             </v-col>
             <v-col
+            :class="loaded & scores.team1 < scores.team2 ? 'big' : 'small'"
             class=" flex-shrink-1 "
             >
                 <div class="scoreBlock team2 rounded-pill">{{scores.team2}}</div>
@@ -14,17 +15,21 @@
 </template>
 
 <script>
+//:class="scores.team1 < scores.team2 ? 'flex-grow-3' : 'flex-shrink-1'"
 export default {
     name: 'Scoreboard',
 
     data(){
         return {
-
+            loaded: Boolean,
         }
     },
     props: {
         scores: Object,
     },
+    mounted(){
+        this.loaded = true;
+    }
 }
 </script>
 
@@ -39,6 +44,7 @@ export default {
     align-items: center;
     display: flex;
     justify-content: center;
+    transition: all .8s ease-in-out;
 }
 
 .team1{
@@ -49,6 +55,13 @@ export default {
 .team2{
     background: var(--v-secondary-base);
     box-shadow: inset 5px 5px 8px var(--v-secondary-darken1);
+}
+
+.big {
+    flex: 10;
+}
+.small {
+    flex: 6;
 }
 
 </style>
