@@ -60,13 +60,13 @@ export default {
                         setting: "termsPerPerson",
                         text: "Terms per person",
                         value: 3,
-                        type: 'number'
+                        type: 'number',
                     },
                     {
                         setting: "timeToGuess",
                         text: "Time to guess",
                         value: 60, //seconds,
-                        type: 'number'
+                        type: 'number',
                     }
                 ],
                 rounds: [
@@ -74,37 +74,43 @@ export default {
                         round: "describe",
                         text: "Describe",
                         value: true,
-                        explanation: "Describe the terms without mentioning them!"
+                        explanation: "Describe the terms without mentioning them!",
+                        icon: 'comment-bubble.svg',
                     },
                     {
                         round: "pantomime",
                         text: "Pantomime",
                         value: false,
-                        explanation: "Mimic the terms given, no words allowed!"
+                        explanation: "Mimic the terms given, no words allowed!",
+                        icon: 'dance.svg',
                     },
                     {
                         round: "oneWord",
                         text: "1 Word",
                         value: false,
-                        explanation: "Use only 1 word to describe each term and 1 word only!"
+                        explanation: "Use only 1 word to describe each term and 1 word only!",
+                        icon: 'gun.svg',
                     },
                     {
                         round: "puppetmaster",
                         text: "Puppetmaster",
                         value: false,
-                        explanation: "Use an adversary as a puppet to let him mimic the terms!"
+                        explanation: "Use an adversary as a puppet to let him mimic the terms!",
+                        icon: 'puppet.svg',
                     },
                     {
                         round: "drawing",
                         text: "Drawing",
                         value: false,
-                        explanation: "Draw the terms without writing any words!"
+                        explanation: "Draw the terms without writing any words!",
+                        icon: 'illustration.svg',
                     },
                     {
                         round: "noises",
                         text: "Make some noise",
                         value: true,
-                        explanation: "Use only sound effects and melodies to describe the terms!"
+                        explanation: "Use only sound effects and melodies to describe the terms!",
+                        icon: 'chicken-rooster.svg',
                     },
                 ]
             }

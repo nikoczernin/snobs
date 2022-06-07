@@ -4,7 +4,7 @@
         <p>{{currentRound.explanation}}</p>
         <div>
             <img 
-                src="../../../../images/icons/describe.svg" 
+                :src="'../images/icons/' + currentRound.icon"
                 alt=""
                 class="roundIcon "
                 >
@@ -23,20 +23,25 @@ export default {
 
     data(){
         return {
-            
+            icon: 'puppet.svg'
         }
     },
     props: {
         currentRound: Object,
-    }
+    },
+
 }
 </script>
 
 
 <style scoped>
 .roundIcon{
-    max-width: 70%;
+    width: 70%;
+    max-width: 300px;
+    max-height: 200px;
     fill: red;
-    margin: 10px 0px;
+    margin: 10px;
+    padding: 20px;
+
 }
 </style>
