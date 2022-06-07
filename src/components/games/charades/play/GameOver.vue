@@ -20,8 +20,16 @@
                     <span v-if="id!=0"> – </span>
                     {{player.name}}</span>
         </div>
-        {{scores}}
-        {{recentGame}}
+
+        <div class="mt-3">
+            <router-link to="/">
+                <v-btn
+                    color="success"
+                    elevation=0
+                    @click="$emit('endRecentGame')"
+                >Go back home</v-btn>
+            </router-link>
+        </div>
     </div>
 </template>
 

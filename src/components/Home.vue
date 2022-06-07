@@ -1,6 +1,5 @@
 <template>
   <div>
-    
     <v-row class="wrap justify-space-around my-2">
       <v-btn small v-if="recentGame" color="info" elevation="0">Resume Game</v-btn>
       <v-btn small @click="makeFriends" color="secondary" elevation="0"> Frends</v-btn>
@@ -8,7 +7,7 @@
         <v-btn small color="success" elevation="0">New Game</v-btn>
       </router-link>
     </v-row>
-
+    
     <v-row class="justify-center my-2">
       <v-col
         xs="12"
@@ -28,17 +27,28 @@
 
 <script>
   import PlayersManager from './PlayersManager'
+  import LineGraph from './games/charades/play/LineGraph.vue'
 
   export default {
     name: 'Home',
 
     components: {
-      PlayersManager
+      PlayersManager,
+      LineGraph
+
     },
 
     data(){
       return {
-
+        deleteMe: [{
+            name: "Team 1",
+            data: [1, 3, 6, 8, 12],
+          },
+          {
+            name: "Team 2",
+            data: [0, 1, 1, 4, 8]
+          },
+          ]
       }
     },
 

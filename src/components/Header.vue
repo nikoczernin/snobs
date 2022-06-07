@@ -8,8 +8,7 @@
             <strong >Snobs</strong> — Bottoms up, oida!
         </router-link>
         <v-spacer></v-spacer>
-        <v-app-bar-nav-icon @click="menuOpen = !menuOpen"></v-app-bar-nav-icon>
-
+        <v-app-bar-nav-icon @click="$emit('menuToggle')"></v-app-bar-nav-icon>
     </v-app-bar>
 </template>
 
@@ -17,7 +16,7 @@
 export default {
     data() {
         return{
-            menuOpen: false
+
         }
     },
     props: {

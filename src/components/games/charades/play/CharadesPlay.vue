@@ -1,69 +1,59 @@
 <template>
     <div>   
-            <StartRound 
-                :currentRound="recentGame.setup.rules.rounds[currentRound]"
-                @startRound="startRound"
-                v-if="state=='startRound'"
-            
-            />
-            lol
-            <StartGuessing
-                :currentTurnTeam="currentTurnTeam"
-                :currentPlayer="currentTurnTeam == 1 ? team1[team1Index] : team2[team2Index]"
-                :currentRoundDescription="recentGame.setup.rules.rounds[currentRound].explanation"
-                @startGuessing="startGuessing"
-                v-if="state=='startGuessing'"
-            />
-                    
-            <Guessing
-                :currentTurnTeam="currentTurnTeam"
-                :currentPlayer="currentTurnTeam == 1 ? team1[team1Index] : team2[team2Index]"
-                :currentTerm="terms[currentTermIndex]"
-                v-if="state=='guessing'"
-                @termPassed="termPassed"
-                @termGuessed="termGuessed"
-                class="termTop"
-            />
-            <Guessing
-                :currentTurnTeam="currentTurnTeam"
-                :currentPlayer="currentTurnTeam == 1 ? team1[team1Index] : team2[team2Index]"
-                :currentTerm="terms[currentTermIndex+1]"
-                v-if="state=='guessing' && terms.length >= (currentTermIndex+2) && false"
-                class="termBottom"
-            />
+        <StartRound 
+            :currentRound="recentGame.setup.rules.rounds[currentRound]"
+            @startRound="startRound"
+            v-if="state=='startRound'"
         
-            <EndGuessing
-                :currentTurnTeam="currentTurnTeam"
-                :currentPlayer="currentTurnTeam == 1 ? team1[team1Index] : team2[team2Index]"
-                :points="pointsGained"
-                :scores="scores"
-                v-if="state=='endGuessing'" 
-                @turnOver="turnOver"
-            />
+        />
+        <StartGuessing
+            :currentTurnTeam="currentTurnTeam"
+            :currentPlayer="currentTurnTeam == 1 ? team1[team1Index] : team2[team2Index]"
+            :currentRoundDescription="recentGame.setup.rules.rounds[currentRound].explanation"
+            @startGuessing="startGuessing"
+            v-if="state=='startGuessing'"
+        />
+                
+        <Guessing
+            :currentTurnTeam="currentTurnTeam"
+            :currentPlayer="currentTurnTeam == 1 ? team1[team1Index] : team2[team2Index]"
+            :currentTerm="terms[currentTermIndex]"
+            v-if="state=='guessing'"
+            @termPassed="termPassed"
+            @termGuessed="termGuessed"
+            class="termTop"
+        />
+        <Guessing
+            :currentTurnTeam="currentTurnTeam"
+            :currentPlayer="currentTurnTeam == 1 ? team1[team1Index] : team2[team2Index]"
+            :currentTerm="terms[currentTermIndex+1]"
+            v-if="state=='guessing' && terms.length >= (currentTermIndex+2) && false"
+            class="termBottom"
+        />
+    
+        <EndGuessing
+            :currentTurnTeam="currentTurnTeam"
+            :currentPlayer="currentTurnTeam == 1 ? team1[team1Index] : team2[team2Index]"
+            :points="pointsGained"
+            :scores="scores"
+            v-if="state=='endGuessing'" 
+            @turnOver="turnOver"
+        />
 
-            <EndRound
-                :currentRound="recentGame.setup.rules.rounds[currentRound]"
-                :scores="scores"
-                :progress="recentGame.progress"
-                v-if="state=='endRound'" 
-                @endRound="endRound"
-            />
+        <EndRound
+            :currentRound="recentGame.setup.rules.rounds[currentRound]"
+            :scores="scores"
+            :progress="recentGame.progress"
+            v-if="state=='endRound'" 
+            @endRound="endRound"
+        />
 
-            <GameOver
-                :scores="scores"
-                :recentGame="recentGame"
-                v-if="state=='gameOver'" 
-            />
+        <GameOver
+            :scores="scores"
+            :recentGame="recentGame"
+            v-if="state=='gameOver'" 
+        />
         
-        <div>
-            <br><strong>Progress</strong> {{recentGame.progress}}
-            <!--
-            <br><strong>Teams</strong> {{team1}}<br>{{team2}}
-            <br><strong>Terms</strong> {{recentGame.setup.terms}}
-            <br><strong>Rules</strong> {{recentGame.setup.rules}}
-            <br><strong>Terms array</strong> {{terms}}
-            -->
-        </div>
     </div>
 </template>
 <script>

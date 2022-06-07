@@ -11,7 +11,7 @@
                 <div
                     v-for="(player, id) in players"
                     :key=id
-                    v-show="terms.map(x=>x[1]).filter(name=>name==player).length<3"
+                    v-show="terms.map(x => x[1]).filter(name => name == player).length < 3"
                     :class="['player-selection',selectedPlayer == id ? 'isSelected' : '', 'px-3', 'py-2', 'ma-1']"
                     @click="selectPlayer(id)"
                 >

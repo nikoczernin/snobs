@@ -46,6 +46,12 @@ export default {
         background-color: var(--v-background-lighten2);
 
         box-shadow: inset 0px -3px 5px var(--v-background-base);
+
+        transition: padding .3s;
+    }
+
+    .playerBox:hover {
+        padding: 8px 3px;
     }
 
     .getSquished {
