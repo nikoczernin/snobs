@@ -1,5 +1,4 @@
 # snobs
-this is a test version
 
 ## Project setup
 ```
