@@ -9,6 +9,9 @@
                 >
                 <v-icon x-large color="white">mdi-close</v-icon>
             </div>
+            <div class="roundButton timer">
+                {{timeToGuess}}
+            </div>
             <div 
                 class="roundButton success"
                 @click="$emit('termGuessed')"
@@ -31,6 +34,7 @@ export default {
         currentTurnTeam: Number,
         currentPlayer: String,
         currentTerm: String,
+        timeToGuess: Number
     }
 }
 </script>
@@ -52,6 +56,12 @@ export default {
 
     .center{
         transform: scale(0.8);
+    }
+
+    .timer {
+        margin-top: 5px;
+        font-weight: 600;
+        font-size: 1.3em;
     }
 
 </style>

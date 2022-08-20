@@ -1,11 +1,14 @@
 <template>
     <div>
         <router-view
-        :players="players" 
         :recentGame="recentGame" 
-        @startGame="startGame"
-        @addToProgress="addToProgress"
-        @gameOver="gameOver"
+            @startGame="startGame"
+            @addToProgress="addToProgress"
+            @gameOver="gameOver"
+        :players="players" 
+            @addPlayer="addPlayer"
+            @assignTeam="assignTeam"
+            @removePlayer="removePlayer"
         />
     </div>
 </template>
@@ -25,10 +28,22 @@ export default {
             this.$emit('addToProgress', newInfo)
         },
         gameOver(){
-            console.log("Game over")
-        }
+            this.$emit('gameOver')
+        },
+        addPlayer(newPlayerInput){
+            this.$emit('addPlayer', newPlayerInput);
+        },
+        assignTeam(playerIndex, team){
+            this.$emit('assignTeam', playerIndex, team);
+        },
+        removePlayer(id){
+            this.$emit('removePlayer', id);
+        },
+
+
 
     },
+
     
     
 }

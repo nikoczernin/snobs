@@ -7,11 +7,11 @@
         :key=id 
         class="d-flex justify-space-between"
         >
-            {{player}}
+            {{player.name}}
             <v-icon 
                 right 
                 small
-                @click="$emit('removePlayer', player)"
+                @click="$emit('removePlayer', id)"
             >mdi-close</v-icon>
         </div>
 

@@ -9,6 +9,7 @@
                 color="primary" 
                 @click="autoSetup" 
                 elevation="0"
+                v-if="recentGame.test_run"
                 >Auto-Setup</v-btn>
             <v-btn 
                 elevation="0"
@@ -39,8 +40,10 @@
                 <Setup2Teams 
                 key=1
                 v-if="selectedSetupCategoriyID == 1"
-                :playersTeams=playersTeams 
+                :players=players 
                 @changeTeam="changeTeam"
+                @addPlayer="addPlayer"
+                @removePlayer="removePlayer"
                 class="setup"
                 />
 
@@ -75,11 +78,11 @@ export default {
         SetupTerms, // let every player create some terms for the game
     },
     props: [
-        'players', 'recentGame'
+        'players', 
+        'recentGame'
     ],
     data(){
         return{
-            playersTeams: [],
             rules: [],
             terms: [],
             setupCategories: ['Rules', 'Teams', 'Terms'],
@@ -87,22 +90,15 @@ export default {
         }
     },
     mounted(){
-        // import the players list and make it into a teams list
-        this.players.forEach(player => {
-            if (this.playersTeams.length >= (this.players.length / 2)){
-                this.playersTeams.push({name: player, team: 1})
-            } else {
-                this.playersTeams.push({name: player, team: 2})
-            }
-        });
+
     },
 
     methods: {
         changeTeam(id){
-            if (this.playersTeams[id].team === 1){
-                this.playersTeams[id].team = 2
+            if (this.players[id].team === 1){
+                this.$emit('assignTeam', id, 2);
             } else {
-                this.playersTeams[id].team = 1
+                this.$emit('assignTeam', id, 1);
             }
         },
         rulesChanged(rules){
@@ -113,9 +109,18 @@ export default {
             this.terms.push(newTerm)
         },
 
+        addPlayer(newPlayerInput){
+            this.$emit('addPlayer', newPlayerInput);
+        },
+        
+        removePlayer(id){
+            this.$emit('removePlayer', id);
+        },
+
+
         startGame(){
             this.$emit('startGame', {
-                playersTeams: this.playersTeams, 
+                players: this.players, 
                 rules: this.rules, 
                 terms: this.terms
                 })
@@ -123,7 +128,7 @@ export default {
         },
 
         autoSetup(){
-            this.terms = [ [ "Penis", "Niko" ], [ "Hose", "Niko" ], [ "Affe", "Niko" ], [ "Kind", "Jan" ], [ "Lol", "Maximilian Emilio Vintschgau" ], [ "Adriano Celentano", "Dr Doom" ], [ "Cunt", "Henry" ] ]
+            this.terms = [ [ "Penis", "Niko" ], [ "Hose", "Niko" ], [ "Affe", "Niko" ], [ "Kind", "Jan" ], [ "Lol", "Maximilian" ], [ "Adriano", "Doom" ], [ "Cunt", "Henry" ] ]
         }
     }
 }

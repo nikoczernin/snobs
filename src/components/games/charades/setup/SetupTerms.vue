@@ -15,7 +15,7 @@
                     :class="['player-selection',selectedPlayer == id ? 'isSelected' : '', 'px-3', 'py-2', 'ma-1']"
                     @click="selectPlayer(id)"
                 >
-                    {{player}}
+                    {{player.name}}
                 </div>
             </div>
 

@@ -2,17 +2,41 @@
         <div class="setup-teams">
             <h3 class="text-center mb-3">Assign teams</h3>
             <v-row 
-                v-for="(player,id) in playersTeams"
+                v-for="(player,id) in players"
                 :key=id
                 :class="[player.team == 1 ? 'team-1' : 'team-2', 'playerRow', 'my-2']"
                 @click="$emit('changeTeam', id)"
             >   
                 <div :class="[player.team == 1 ? 'getSquished' : 'pushAway']"></div>
                 <div
-                class="playerBox">
+                    class="playerBox"
+                >
                     {{player.name}}
+                    <v-icon
+                        small
+                        color="grey lighten-1"
+                        @click="$emit('removePlayer', id)"
+                    >
+                    mdi-close
+                    </v-icon>
                 </div>
                 <div :class="[player.team == 1 ? 'pushAway' : 'getSquished']"></div>
+            </v-row>
+            
+            <v-row class="mx-4">
+                <v-text-field
+                    placeholder="New Player"
+                    clearable
+                    color="success"
+                    append-icon="mdi-plus"
+                    v-model="newPlayerInput"
+                    @click:append="addPlayer"
+                    @keyup.enter="addPlayer"
+                    @input="error_msg=''"
+                    class="mt-4"
+                ></v-text-field>
+        <p v-if="newPlayerInput" class="error--text text-center">{{error_msg}}</p>
+
             </v-row>
         </div>
 </template>
@@ -22,8 +46,32 @@
 export default {
     name: 'SetupCharades',
     props: [
-        'playersTeams'
-    ]
+        'players'
+    ],
+    data(){
+        return{
+            error_msg: '',
+            newPlayerInput: '',
+        }
+    },
+    methods: {
+        addPlayer(){
+            if (this.players.includes(this.newPlayerInput)){
+                this.error_msg = "This name is already taken, dipshit!"
+            } else if (this.newPlayerInput.length < 2){
+                this.error_msg = "That name's is a little short, innit?"
+            }  else {
+                this.$emit('addPlayer', this.newPlayerInput);
+                this.newPlayerInput = ""
+                this.error_msg = ""
+                }
+
+        },
+    },
+
+    mounted(){
+    }
+
 }
 </script>
 

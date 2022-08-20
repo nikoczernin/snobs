@@ -10,7 +10,9 @@
                     {{currentPlayer}}!
                 </strong>
             </span>
-            Your team now has <strong>{{scores["team"+currentTurnTeam]}}</strong> points.
+            You gained your team <strong>{{scores["team"+currentTurnTeam]}}</strong> points.
+            <br>
+            Treat the enemy team to <strong>{{scores["team"+currentTurnTeam]}}</strong> shots!
         </p>
 
         <v-btn 

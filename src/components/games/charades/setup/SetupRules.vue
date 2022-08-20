@@ -67,6 +67,12 @@ export default {
                         text: "Time to guess",
                         value: 60, //seconds,
                         type: 'number',
+                    },
+                    {
+                        setting: "timePenalty",
+                        text: "Time Penalty for skipping in seconds",
+                        value: 10,
+                        type: 'number'
                     }
                 ],
                 rounds: [
@@ -80,21 +86,21 @@ export default {
                     {
                         round: "pantomime",
                         text: "Pantomime",
-                        value: false,
+                        value: true,
                         explanation: "Mimic the terms given, no words allowed!",
                         icon: 'dance.svg',
                     },
                     {
                         round: "oneWord",
                         text: "1 Word",
-                        value: false,
+                        value: true,
                         explanation: "Use only 1 word to describe each term and 1 word only!",
                         icon: 'gun.svg',
                     },
                     {
                         round: "puppetmaster",
                         text: "Puppetmaster",
-                        value: false,
+                        value: true,
                         explanation: "Use an adversary as a puppet to let him mimic the terms!",
                         icon: 'puppet.svg',
                     },

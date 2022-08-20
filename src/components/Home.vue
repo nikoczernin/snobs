@@ -1,10 +1,16 @@
 <template>
   <div>
+
+
+      <router-link to="charades/setup">
+        <img src="images/icons/puke.svg" alt="" >
+      </router-link>      
+
     <v-row class="wrap justify-space-around my-2">
-      <v-btn small v-if="recentGame" color="info" elevation="0">Resume Game</v-btn>
-      <v-btn small @click="makeFriends" color="secondary" elevation="0"> Frends</v-btn>
-      <router-link to="games">
-        <v-btn small color="success" elevation="0">New Game</v-btn>
+      <v-btn small v-if="recentGame & recentGame.test_run" color="info" elevation="0">Resume Game</v-btn>
+      <v-btn small v-if="recentGame.test_run" @click="makeFriends" color="secondary" elevation="0"> Frends</v-btn>
+      <router-link to="charades/setup">
+        <v-btn small color="success" elevation="0">Let's go!</v-btn>
       </router-link>
     </v-row>
     
@@ -14,6 +20,7 @@
         sm="6"
       >
         <PlayersManager
+          v-if="false"
           :players="players"
           @addPlayer="addPlayer"
           @removePlayer="removePlayer"
@@ -47,8 +54,8 @@
           {
             name: "Team 2",
             data: [0, 1, 1, 4, 8]
-          },
-          ]
+          },],
+        counter: 0,
       }
     },
 
@@ -61,6 +68,9 @@
     mounted(){
       //this.recentGame = this.$store.getters.getRecentGame
       //this.players = this.$store.getters.getPlayers
+      if (localStorage.counter){
+        this.counter = Number(localStorage.counter)
+      } 
     },
 
     methods: {
@@ -71,9 +81,11 @@
           "Jan",  
           "Henry",  
           "Maximilian",  
-          "Dr Doom", 
+          "Doom", 
           ]
-        this.$emit("addPlayer", newPlayers)
+        newPlayers.forEach((player) =>{
+          this.$emit("addPlayer", player)
+        })
       },
       
       addPlayer(player){
@@ -87,3 +99,15 @@
     }
   }
 </script>
+
+<style scoped>
+  img {
+    width: 90%;
+    max-width: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;   
+    margin-bottom: 20px;
+    border-radius: 20px;
+  }
+</style>

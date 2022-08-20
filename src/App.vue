@@ -18,17 +18,18 @@
       <v-main>
         <transition name="fade" mode="out-in">
           <router-view 
-            @endRecentGame="endRecentGame"
             :players="players" 
               @resetPlayers="resetPlayers"
               @addPlayer="addPlayer"
               @removePlayer="removePlayer"
+              @assignTeam="assignTeam"
             :recentGame="recentGame" 
               @updateSetup="updateSetup"
               @addToProgress="addToProgress" 
+              @gameOver="gameOver"
+
           />
         </transition>
-        {{recentGame}}
       </v-main>
     </v-container>
   </v-app>
@@ -46,10 +47,11 @@ export default {
   },
 
   data: () => ({
-    players: [], // an array of strings, each being a player's name
+    players: [], // an array of objects, zB: name: "Niko"
     recentGame: {
       setup: {}, // save the set rules, terms, teams, etc
-      progress: [] // save an object for every round
+      progress: [], // save an object for every round
+      test_run: true,
     },
     menuOpen: false
   }),
@@ -57,12 +59,12 @@ export default {
 
 
   methods: {
+
     menuToggle(){
       this.menuOpen = !this.menuOpen
     },
 
-    endRecentGame(){ //keep the players, reset rest
-      alert("aus is")
+    gameOver(){ //keep the players, reset rest
       this.recentGame.game = null
       this.recentGame.setup = {}
       this.recentGame.progress = []
@@ -73,20 +75,26 @@ export default {
       this.players = []
     },
 
-
     addPlayer(player){
-      if (typeof player != "string"){
-        this.players = this.players.concat(player)
-      } else {
-        this.players.push(player)
-      }
-},
+      let team = Math.floor(Math.random() * (3 - 1) + 1)
+      let newPlayer = {"name": player, "team": team}
+      this.players.push(newPlayer)
+    },
 
-    removePlayer(nameToRemove){
-      // return the array of players but filter out the nameToRemove
-      this.players = this.players.filter(function (playerName) {
-        return playerName != nameToRemove
-      });
+    assignTeam(playerIndex, team){
+        this.players[playerIndex].team = team
+    },
+
+    removePlayer(playerToRemove){
+      // if an index has been passed
+      if (typeof(playerToRemove) == "number") {
+        this.players.splice(playerToRemove, 1)
+        }
+      // if a string for the name has been passed
+      else {
+        alert("App.vue -> feature of deletion by name not yet implemented!!!")
+        let fick = this.players.find(x => x.name === playerToRemove)
+      }
     },
 
     shufflePlayers(){

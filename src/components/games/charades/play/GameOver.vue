@@ -14,7 +14,7 @@
         <div class="teamShowcase" v-if="winningTeam > 0">
             <h3>These are the winners:</h3>
             <span
-                v-for="(player,id) in teams[winningTeam]"
+                v-for="(player,id) in winningTeamNames"
                 :key=id
                 >
                     <span v-if="id!=0"> – </span>
@@ -22,13 +22,11 @@
         </div>
 
         <div class="mt-3">
-            <router-link to="/">
-                <v-btn
-                    color="success"
-                    elevation=0
-                    @click="$emit('endRecentGame')"
-                >Go back home</v-btn>
-            </router-link>
+            <v-btn
+                color="success"
+                elevation=0
+                @click="gameOver"
+            >Go back home</v-btn>
         </div>
     </div>
 </template>
@@ -43,6 +41,7 @@ export default {
         return {
             winningTeam: 0, 
             teams: [],
+            winningTeamNames: []
         }
     },
     props: {
@@ -64,11 +63,16 @@ export default {
             this.winningTeam = 2;
         }
         // set a list of all winners to diplay
-        this.recentGame.setup.playersTeams
-        this.teams.push(this.recentGame.setup.playersTeams.filter(player => player.team == 1))
-        this.teams.push(this.recentGame.setup.playersTeams.filter(player => player.team == 2))
+        // this.recentGame.setup.playersTeams
+        // this.teams.push(this.recentGame.setup.playersTeams.filter(player => player.team == 1))
+        // this.teams.push(this.recentGame.setup.playersTeams.filter(player => player.team == 2))
+        this.winningTeamNames = this.recentGame.setup.players.filter(player => player.team == this.winningTeam)
     },
     methods:{
+        gameOver(){
+            this.$emit('gameOver')
+            this.$router.push('/');
+        }
     }
 
 }

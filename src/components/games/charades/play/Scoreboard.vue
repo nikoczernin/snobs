@@ -56,11 +56,11 @@ export default {
             totalScoresPerTeam: [
                 {
                     name: 'Team 1',
-                    data: [0]
+                    data: []
                 },
                 {
                     name: 'Team 2',
-                    data: [0]
+                    data: []
                 },
             ],            
         }
@@ -83,8 +83,16 @@ export default {
                 for (let round=0; round < this.scoresPerTeam[0].length; round++) {
                     // take the score of round i of each team
                     let newScore = this.scoresPerTeam[team][round]
+                    if (newScore == undefined){
+                        newScore = 0
+                    }
+
                     // add it to the total score up until round i of each team
-                    let previousScore = this.totalScoresPerTeam[team].data[round]
+                    let previousScore = this.totalScoresPerTeam[team].data[round-1]
+                    if (previousScore == undefined){
+                        previousScore = 0
+                    }
+
                     let totalScore = newScore + previousScore
                     // push both values in an array to the totalScoresPerRound
                     this.totalScoresPerTeam[team].data.push(totalScore)

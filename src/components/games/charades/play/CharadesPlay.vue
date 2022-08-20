@@ -17,7 +17,8 @@
         <Guessing
             :currentTurnTeam="currentTurnTeam"
             :currentPlayer="currentTurnTeam == 1 ? team1[team1Index] : team2[team2Index]"
-            :currentTerm="terms[currentTermIndex]"
+            :currentTerm="terms[remainingTermIDS[0]]"
+            :timeToGuess="timeToGuess"
             v-if="state=='guessing'"
             @termPassed="termPassed"
             @termGuessed="termGuessed"
@@ -26,7 +27,7 @@
         <Guessing
             :currentTurnTeam="currentTurnTeam"
             :currentPlayer="currentTurnTeam == 1 ? team1[team1Index] : team2[team2Index]"
-            :currentTerm="terms[currentTermIndex+1]"
+            :currentTerm="terms[remainingTermIDS[1]]"
             v-if="state=='guessing' && terms.length >= (currentTermIndex+2) && false"
             class="termBottom"
         />
@@ -52,6 +53,7 @@
             :scores="scores"
             :recentGame="recentGame"
             v-if="state=='gameOver'" 
+            @gameOver="gameOver"
         />
         
     </div>
@@ -80,14 +82,14 @@ export default {
             team2Index: 0,
 
             currentTurnTeam: 1, // which team is playing rn?
-            currentTermIndex: 0,
+            remainingTermIDS: [],
             pointsGained: 0,
 
             currentRound: 0, // pantomime or whatever
 
             terms: [], // this terms array gets reloaded every round
 
-            timeToGuessSetting: 5,
+            timeToGuessSetting: this.recentGame.setup.rules.settings[1].value,
             timeToGuess: null, // timer 
             timePentaltyAmount: 10,
 
@@ -111,6 +113,25 @@ export default {
             }
         }
     },
+    mounted(){
+        // distribute the teams now
+        for(let id in this.recentGame.setup.players){
+            let name = this.recentGame.setup.players[id].name
+            let team = this.recentGame.setup.players[id].team
+            if (team == 1){this.team1.push(name)}
+            else if (team == 2){this.team2.push(name)}
+            else{console.log('oida')}
+        }
+
+        // the first round should be a selected one
+        for (let i = 0; i < this.recentGame.setup.rules.rounds.length; i++) {
+            if (this.recentGame.setup.rules.rounds[i].value) {
+                this.currentRound = i
+                break
+            }
+        }
+
+    },
 
     methods:{
         getTermsArray(){
@@ -118,7 +139,10 @@ export default {
             for (let id in this.recentGame.setup.terms){
                 this.terms.push(this.recentGame.setup.terms[id][0])
             }
+        },
 
+        getOrderedTermIDS(){
+            return Array(this.terms.length).fill().map((element, index) => index)
         },
 
         startRound(){
@@ -126,43 +150,41 @@ export default {
             this.currentTermIndex = 0 // start with the first term
             // get the terms array
             this.getTermsArray()
-            // randomize the terms array
-            this.shuffleArray(this.terms)
-
+            // push an array of term IDS to remainingTermIDS
+            this.remainingTermIDS = this.getOrderedTermIDS()
         },
         startGuessing(){
             this.state = "guessing"
             this.pointsGained = 0
-
             this.timeToGuess = this.timeToGuessSetting
-
-            
+            // randomize the terms array
+            this.remainingTermIDS = this.shuffleArray(this.remainingTermIDS)
             // start the timer
             this.interval = setInterval(() => this.timeToGuess--, 1000)
         },
 
         shuffleArray(arr){
-                arr.sort(() => Math.random() - 0.5);
+            return arr.sort(() => Math.random() - 0.5)
         },
 
         timePentalty(team){
-            this.timeToGuess = this.timeToGuess - 10
+            let timePentalty = this.recentGame.setup.rules.settings[2].value
+            this.timeToGuess = this.timeToGuess - timePentalty
         },
 
         //term returned
         termPassed(){
             this.timePentalty()
-            this.terms.push(this.terms[this.currentTermIndex]) // keep the term to play it again
-            this.currentTermIndex ++            
-            // if this was the last term in the terms array, end the guessing
-            if(this.currentTermIndex == this.terms.length) {
-                this.endGuessing()
-            }
-        },
+            // add the first element in the randomized ids to the end   
+            this.remainingTermIDS.push(this.remainingTermIDS.shift())
+            },
+
         termGuessed(){
             this.pointsGained ++ // reward
-            this.currentTermIndex ++            
-            if(this.currentTermIndex == this.terms.length) {
+            // remove the first item of the remainingTermIDS arr
+            this.remainingTermIDS.shift()
+            // end the round if there are no more ids in remainingTermIDS
+            if (this.remainingTermIDS.length < 1) {
                 this.endGuessing()
             }
         },
@@ -198,15 +220,13 @@ export default {
         turnOver(){
             this.nextPlayersTurn()
             this.nextTeamsTurn()
-            // round not over, some terms are not guessed yet
-            if ((this.currentTermIndex ) < this.terms.length) {
+            if (this.remainingTermIDS.length > 0){
                 this.state = 'startGuessing'
-            } 
+            }
             // round is over
             else {
                 this.state = 'endRound'
             }
-
         },
 
         endRound(){
@@ -218,34 +238,14 @@ export default {
                     return
                 }
             }
-            this.gameOver()
+            this.state = 'gameOver'
         },
 
         gameOver(){
-            this.$emit('gameOver') // delete this
-            this.state = 'gameOver'
+            this.$emit("gameOver")
         }
 
     },
-    mounted(){
-        // distribute the teams now
-        for(let id in this.recentGame.setup.playersTeams){
-            let name = this.recentGame.setup.playersTeams[id].name
-            let team = this.recentGame.setup.playersTeams[id].team
-            if (team == 1){this.team1.push(name)}
-            else if (team == 2){this.team2.push(name)}
-            else{console.log('oida')}
-        }
-
-        // the first round should be a selected one
-        for (let i = 0; i < this.recentGame.setup.rules.rounds.length; i++) {
-            if (this.recentGame.setup.rules.rounds[i].value) {
-                this.currentRound = i
-                break
-            }
-        }
-
-    }
 }
 </script>
 

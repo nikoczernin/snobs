@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import  {createWebHistory} from 'vue-router'
+
 import Home from '../components/Home.vue'
 import Games from '../components/games/Games.vue'
 import Charades from '../components/games/charades/Charades.vue'
@@ -39,9 +41,11 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'history',  // history
   base: process.env.BASE_URL,
   routes
 })
 
 export default router
+
+
